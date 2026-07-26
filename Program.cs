@@ -1,53 +1,49 @@
-﻿using System;
-using System.Transactions;
-
-public class NotificationService
+﻿public class LoggingService
 {
-    public enum enNotificationType { Email, SMS, Fax }
+    public enum enLoggingType { LogToEventLog, LogToDB, LogToFile }
 
-    public void SendNotification(string to, string message, enNotificationType NotificationType)
+    public void Log(string message, enLoggingType LogType)
     {
 
-        if (NotificationType == enNotificationType.Email)
+        if (LogType == enLoggingType.LogToEventLog)
         {
-            EmailService.SendEmail(to, message);
+            LogToEventLog.LogtoEventLog(message);
         }
-        else if (NotificationType == enNotificationType.SMS)
+        else if (LogType == enLoggingType.LogToFile)
         {
-            SMSService.SendSMS(to, message);
+            LogToEventLog.LogtoEventLog(message);
         }
-        else if (NotificationType == enNotificationType.Fax)
+        else if (LogType == enLoggingType.LogToDB)
         {
-            FaxService.SendFax(to, message);
+            LogToDB.LogtoDB(message);
         }
     }
 
 }
 
-public class EmailService
+public class LogToEventLog
 {
-    // Method to send email
-    public static void SendEmail(string to, string message)
+    public static void LogtoEventLog(string message)
     {
-        Console.WriteLine($"\nSending Email to {to}: {message}");
+        Console.WriteLine($"\nLog To File {message}");
     }
 }
 
-public class SMSService
+public class LogToFile
 {
     // Method to send SMS
-    public static void SendSMS(string to, string message)
+    public static void LogtoFile(string message)
     {
-        Console.WriteLine($"\nSending SMS to {to}: {message}");
+        Console.WriteLine($"\nLog to File {message}");
     }
 }
 
-public class FaxService
+public class LogToDB
 {
     // Method to send Fax
-    public static void SendFax(string to, string message)
+    public static void LogtoDB(string message)
     {
-        Console.WriteLine($"\nSending Fax to {to}: {message}");
+        Console.WriteLine($"\nLog to DB {message}");
     }
 }
 
@@ -56,17 +52,14 @@ class Program
 {
     static void Main()
     {
-        // Create an instance of the NotificationService
-        NotificationService notificationService = new NotificationService();
+        // Create an instance of the Log
+        LoggingService LoggingService = new LoggingService();
 
-        // Send an email
-        notificationService.SendNotification("john@example.com", "Welcome to our service!", NotificationService.enNotificationType.Email);
+        LoggingService.Log("Logging using EventLog", LoggingService.enLoggingType.LogToEventLog);
 
-        // Send an SMS
-        notificationService.SendNotification("+123456789", "Your OTP code is 1234.", NotificationService.enNotificationType.SMS);
+        LoggingService.Log("Logging using File", LoggingService.enLoggingType.LogToFile);
 
-        // Send a fax
-        notificationService.SendNotification("123-456-789", "Fax Message: Important document.", NotificationService.enNotificationType.Fax);
+        LoggingService.Log("Logging using DB", LoggingService.enLoggingType.LogToDB);
 
         Console.ReadKey();
 

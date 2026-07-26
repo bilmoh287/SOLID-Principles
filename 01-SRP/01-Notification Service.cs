@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SOLID._01_SRP
 {
+    using System;
+    using System.Transactions;
+
     public class NotificationService
     {
         public enum enNotificationType { Email, SMS, Fax }
@@ -59,7 +62,7 @@ namespace SOLID._01_SRP
 
     class Program
     {
-        static void Main()
+        static void main()
         {
             // Create an instance of the NotificationService
             NotificationService notificationService = new NotificationService();
@@ -77,5 +80,6 @@ namespace SOLID._01_SRP
 
         }
     }
+
 
 }
