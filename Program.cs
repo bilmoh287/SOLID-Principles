@@ -4,114 +4,102 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class NotificationService
+public class LoggingService
 {
-    private INotification _Notification;
-    public NotificationService(INotification notification)
+    private ILoggingService _LoggingService;
+    public LoggingService(ILoggingService loggingService)
     {
-        _Notification = notification;
+        _LoggingService = loggingService;
     }
-    public void SendNotification(string to, string message)
+
+    public void Log(string message)
     {
 
-        //if (NotificationType == enNotificationType.Email)
+        //if (LoggingType == enLoggingType.ToFile)
         //{
-        //    EmailService.SendEmail(to, message);
+        //    FileLoggingService.Log(message);
         //}
-        //else if (NotificationType == enNotificationType.SMS)
+        //else if (LoggingType == enLoggingType.ToEventLog)
         //{
-        //    SMSService.SendSMS(to, message);
+        //    EventLogService.Log(message);
         //}
-        //else if (NotificationType == enNotificationType.Fax)
+        //else if (LoggingType == enLoggingType.ToDatabase)
         //{
-        //    FaxService.SendFax(to, message);
+        //    DatabaseLoggingService.Log(message);
         //}
 
-        _Notification.Send(to, message);
+        _LoggingService.Log(message);
     }
 
 }
-public interface INotification
+
+public interface ILoggingService
 {
-    public void Send(string to, string message);
+    void Log(string message);
 }
 
-public class EmailService : INotification
+public class FileLoggingService : ILoggingService
 {
-    // Method to send email
-    public void Send(string to, string message)
+    // Method to log to file
+    public void Log(string message)
     {
-        Console.WriteLine($"\nSending Email to {to}: {message}");
+        Console.WriteLine($"\nLog to file: {message}");
     }
 }
 
-public class SMSService : INotification
+public class EventLogService : ILoggingService
 {
-    // Method to send SMS
-    public void Send(string to, string message)
+    // Method to log to EventLog
+    public void Log(string message)
     {
-        Console.WriteLine($"\nSending SMS to {to}: {message}");
+        Console.WriteLine($"\nLog to Event Log: {message}");
     }
 }
 
-public class FaxService : INotification
+public class DatabaseLoggingService : ILoggingService
 {
-    // Method to send Fax
-    public void Send(string to, string message)
+
+    // Method to log to file
+    public void Log(string message)
     {
-        Console.WriteLine($"\nSending Fax to {to}: {message}");
-    }
-}
-public class TelegramService : INotification
-{
-    // Method to send Fax
-    public void Send(string to, string message)
-    {
-        Console.WriteLine($"\nSending Telegram to {to}: {message}");
+        Console.WriteLine($"\nLog to Database: {message}");
     }
 }
 
-public class WhatsappService : INotification
+public class ExcelLoggingService : ILoggingService
 {
-    // Method to send Fax
-    public void Send(string to, string message)
+
+    // Method to log to file
+    public void Log(string message)
     {
-        Console.WriteLine($"\nSending Whatsapp to {to}: {message}");
+        Console.WriteLine($"\nLog to Excel: {message}");
     }
 }
-
 
 class Program
 {
     static void Main()
     {
-        // Create an instance of the NotificationService
-        NotificationService notificationService = new NotificationService(new EmailService());
+        // Create an instance of the LoggingService
+        LoggingService LoggingService = new LoggingService( new FileLoggingService());
 
-        // Send an email
-        notificationService.SendNotification("john@example.com", "Welcome to our service!");
+        // Log to File
+        LoggingService.Log("Error Occured line xxx.");
 
-        notificationService = new NotificationService(new SMSService());
+        LoggingService = new LoggingService(new EventLogService());
+        // Log to Event Log
+        LoggingService.Log("Error Occured line xxx.");
 
-        // Send an SMS
-        notificationService.SendNotification("+123456789", "Your OTP code is 1234.");
+        LoggingService = new LoggingService(new DatabaseLoggingService());
+        // Log to Database
+        LoggingService.Log("Error Occured line xxx.");
 
-        notificationService = new NotificationService(new FaxService());
-        // Send a fax
-        notificationService.SendNotification("123-456-789", "Fax Message: Important document.");
-
-        notificationService = new NotificationService(new WhatsappService());
-        // Send a Whatsapp
-        notificationService.SendNotification("Mr Bilal", "whatsapp Message: Important document.");
-
-        notificationService = new NotificationService(new TelegramService());
-        // Send a Telegram
-        notificationService.SendNotification("Mr Harun", "Hello Sir it's done!");
+        LoggingService = new LoggingService(new ExcelLoggingService());
+        // Log to Database
+        LoggingService.Log("Error Occured line xxx.");
 
         Console.ReadKey();
 
     }
 }
-
-
 
