@@ -1,78 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-public class LoggingService
+public class PaymentService
 {
-    private ILoggingService _LoggingService;
-    public LoggingService(ILoggingService loggingService)
+    private IPaymentProcessor _paymentProcessor;
+
+    public PaymentService(IPaymentProcessor paymentProcessor)
     {
-        _LoggingService = loggingService;
+        _paymentProcessor = paymentProcessor;
     }
 
-    public void Log(string message)
+    public void ProcessPayment(decimal amount)
     {
-
-        //if (LoggingType == enLoggingType.ToFile)
-        //{
-        //    FileLoggingService.Log(message);
-        //}
-        //else if (LoggingType == enLoggingType.ToEventLog)
-        //{
-        //    EventLogService.Log(message);
-        //}
-        //else if (LoggingType == enLoggingType.ToDatabase)
-        //{
-        //    DatabaseLoggingService.Log(message);
-        //}
-
-        _LoggingService.Log(message);
-    }
-
-}
-
-public interface ILoggingService
-{
-    void Log(string message);
-}
-
-public class FileLoggingService : ILoggingService
-{
-    // Method to log to file
-    public void Log(string message)
-    {
-        Console.WriteLine($"\nLog to file: {message}");
+        _paymentProcessor.Process(amount);
     }
 }
 
-public class EventLogService : ILoggingService
+public interface IPaymentProcessor
 {
-    // Method to log to EventLog
-    public void Log(string message)
+    void Process(decimal amount);
+}
+
+public class PayPalPaymentProcessor : IPaymentProcessor
+{
+    // Method to process PayPal payment
+    public void Process(decimal amount)
     {
-        Console.WriteLine($"\nLog to Event Log: {message}");
+        Console.WriteLine($"\nProcessing PayPal payment of {amount:C}");
     }
 }
 
-public class DatabaseLoggingService : ILoggingService
+public class CreditCardPaymentProcessor : IPaymentProcessor
 {
-
-    // Method to log to file
-    public void Log(string message)
+    // Method to process Credit Card payment
+    public void Process(decimal amount)
     {
-        Console.WriteLine($"\nLog to Database: {message}");
+        Console.WriteLine($"\nProcessing Credit Card payment of {amount:C}");
     }
 }
 
-public class ExcelLoggingService : ILoggingService
+public class BankTransferPaymentProcessor : IPaymentProcessor
 {
-
-    // Method to log to file
-    public void Log(string message)
+    // Method to process Bank Transfer payment
+    public void Process(decimal amount)
     {
-        Console.WriteLine($"\nLog to Excel: {message}");
+        Console.WriteLine($"\nProcessing Bank Transfer payment of {amount:C}");
+    }
+}
+
+public class BitcoinPaymentProcessor : IPaymentProcessor
+{
+    // Method to process Bitcoin payment
+    public void Process(decimal amount)
+    {
+        Console.WriteLine($"\nProcessing Bitcoin payment of {amount:C} in Bitcoin");
+    }
+}
+
+public class ZainCashPaymentProcessor : IPaymentProcessor
+{
+    // Method to process ZainCash payment
+    public void Process(decimal amount)
+    {
+        Console.WriteLine($"\nProcessing ZainCash payment of {amount:C}");
     }
 }
 
@@ -80,26 +69,26 @@ class Program
 {
     static void Main()
     {
-        // Create an instance of the LoggingService
-        LoggingService LoggingService = new LoggingService( new FileLoggingService());
+        // Create an instance of PaymentService using PayPal
+        PaymentService paymentService = new PaymentService(new PayPalPaymentProcessor());
+        paymentService.ProcessPayment(100.00M);
 
-        // Log to File
-        LoggingService.Log("Error Occured line xxx.");
+        // Create an instance of PaymentService using Credit Card
+        paymentService = new PaymentService(new CreditCardPaymentProcessor());
+        paymentService.ProcessPayment(250.50M);
 
-        LoggingService = new LoggingService(new EventLogService());
-        // Log to Event Log
-        LoggingService.Log("Error Occured line xxx.");
+        // Create an instance of PaymentService using Bank Transfer
+        paymentService = new PaymentService(new BankTransferPaymentProcessor());
+        paymentService.ProcessPayment(500.75M);
 
-        LoggingService = new LoggingService(new DatabaseLoggingService());
-        // Log to Database
-        LoggingService.Log("Error Occured line xxx.");
+        // Create an instance of PaymentService using Bitcoin
+        paymentService = new PaymentService(new BitcoinPaymentProcessor());
+        paymentService.ProcessPayment(0.005M);
 
-        LoggingService = new LoggingService(new ExcelLoggingService());
-        // Log to Database
-        LoggingService.Log("Error Occured line xxx.");
+        // Create an instance of PaymentService using ZainCash
+        paymentService = new PaymentService(new ZainCashPaymentProcessor());
+        paymentService.ProcessPayment(300.00M);
 
         Console.ReadKey();
-
     }
 }
-
