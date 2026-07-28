@@ -1,94 +1,67 @@
 ﻿using System;
 
-public class PaymentService
+namespace LSPViolation
 {
-    private IPaymentProcessor _paymentProcessor;
-
-    public PaymentService(IPaymentProcessor paymentProcessor)
+    class Bird
     {
-        _paymentProcessor = paymentProcessor;
+        public virtual void Eat()
+        {
+            Console.WriteLine("Bird is eating.");
+        }
+
+        public virtual void Fly()
+        {
+            Console.WriteLine("Bird is flying.");
+        }
     }
 
-    public void ProcessPayment(decimal amount)
+    class Eagle : Bird
     {
-        _paymentProcessor.Process(amount);
+        public override void Eat()
+        {
+            Console.WriteLine("Eagle is eating meat.");
+        }
+
+        public override void Fly()
+        {
+            Console.WriteLine("Eagle is flying high in the sky.");
+        }
     }
-}
 
-public interface IPaymentProcessor
-{
-    void Process(decimal amount);
-}
-
-public class PayPalPaymentProcessor : IPaymentProcessor
-{
-    // Method to process PayPal payment
-    public void Process(decimal amount)
+    class Ostrich : Bird
     {
-        Console.WriteLine($"\nProcessing PayPal payment of {amount:C}");
+        public override void Eat()
+        {
+            Console.WriteLine("Ostrich is eating plants.");
+        }
+
+        public override void Fly()
+        {
+            throw new NotSupportedException("Ostriches cannot fly.");
+        }
     }
-}
 
-public class CreditCardPaymentProcessor : IPaymentProcessor
-{
-    // Method to process Credit Card payment
-    public void Process(decimal amount)
+    internal class Program
     {
-        Console.WriteLine($"\nProcessing Credit Card payment of {amount:C}");
-    }
-}
+        static void MakeBirdFly(Bird bird)
+        {
+            bird.Fly();
+        }
 
-public class BankTransferPaymentProcessor : IPaymentProcessor
-{
-    // Method to process Bank Transfer payment
-    public void Process(decimal amount)
-    {
-        Console.WriteLine($"\nProcessing Bank Transfer payment of {amount:C}");
-    }
-}
+        static void Main(string[] args)
+        {
+            Bird eagle = new Eagle();
+            Bird ostrich = new Ostrich();
 
-public class BitcoinPaymentProcessor : IPaymentProcessor
-{
-    // Method to process Bitcoin payment
-    public void Process(decimal amount)
-    {
-        Console.WriteLine($"\nProcessing Bitcoin payment of {amount:C} in Bitcoin");
-    }
-}
+            eagle.Eat();
+            eagle.Fly();
+            MakeBirdFly(eagle);
 
-public class ZainCashPaymentProcessor : IPaymentProcessor
-{
-    // Method to process ZainCash payment
-    public void Process(decimal amount)
-    {
-        Console.WriteLine($"\nProcessing ZainCash payment of {amount:C}");
-    }
-}
+            Console.WriteLine();
+            ostrich.Eat();
+            MakeBirdFly(ostrich);   // ❌ Runtime Exception
 
-class Program
-{
-    static void Main()
-    {
-        // Create an instance of PaymentService using PayPal
-        PaymentService paymentService = new PaymentService(new PayPalPaymentProcessor());
-        paymentService.ProcessPayment(100.00M);
-
-        // Create an instance of PaymentService using Credit Card
-        paymentService = new PaymentService(new CreditCardPaymentProcessor());
-        paymentService.ProcessPayment(250.50M);
-
-        // Create an instance of PaymentService using Bank Transfer
-        paymentService = new PaymentService(new BankTransferPaymentProcessor());
-        paymentService.ProcessPayment(500.75M);
-
-        // Create an instance of PaymentService using Bitcoin
-        paymentService = new PaymentService(new BitcoinPaymentProcessor());
-        paymentService.ProcessPayment(0.005M);
-
-        // Create an instance of PaymentService using ZainCash
-        paymentService = new PaymentService(new ZainCashPaymentProcessor());
-        paymentService.ProcessPayment(300.00M);
-
-        Console.ReadKey();
+            Console.ReadKey();
+        }
     }
 }
