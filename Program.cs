@@ -1,88 +1,70 @@
-﻿using System;
+﻿// Violation of ISP: An interface that forces clients to implement methods they don't need
+using System;
+using System.Drawing;
 
-public class Person
+public interface IPrinter
 {
-    // Virtual method to send an email
-    public virtual void SendEmail()
+    void Print(string content);
+    void Scan();
+    void Fax();
+
+}
+
+public class BasicPrinter : IPrinter
+{
+    public void Print(string content)
     {
-        Console.WriteLine("Sending email to a person...");
+        Console.WriteLine($"Printing: {content}");
+    }
+
+    public void Scan()
+    {
+        // BasicPrinter doesn't support scanning, but must implement this method
+        throw new NotImplementedException();
+    }
+
+    public void Fax()
+    {
+        // BasicPrinter doesn't support faxing, but must implement this method
+        throw new NotImplementedException();
     }
 }
 
-public class PersonWithSalary : Person
+
+public class AdvancedPrinter : IPrinter
 {
-    // Virtual method to pay salary
-    public virtual void PaySalary()
+    public void Print(string content)
     {
-        Console.WriteLine("Paying salary to a person...");
-    }
-}
-public class Employee : PersonWithSalary
-{
-    // Override PaySalary for employees
-    public override void PaySalary()
-    {
-        Console.WriteLine("Paying salary to an employee...");
+        Console.WriteLine($"Printing: {content}");
     }
 
-    // Override SendEmail for employees
-    public override void SendEmail()
+    public void Scan()
     {
-        Console.WriteLine("Sending email to an employee...");
-    }
-}
-
-public class Manager : Employee
-{
-    // Override PaySalary for managers
-    public override void PaySalary()
-    {
-        Console.WriteLine("Paying salary to a manager...");
+        Console.WriteLine($"Scanning..");
     }
 
-    // Override SendEmail for managers
-    public override void SendEmail()
+    public void Fax()
     {
-        Console.WriteLine("Sending email to a manager...");
-    }
-}
-
-public class Student : Person
-{
-    // Override SendEmail for students
-    public override void SendEmail()
-    {
-        Console.WriteLine("Sending email to a student...");
-    }
-}
-
-public class User : Person
-{
-    // Override SendEmail for User
-    public override void SendEmail()
-    {
-        Console.WriteLine("Sending email to a User...");
+        Console.WriteLine($"Faxing...");
     }
 }
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static void Main()
     {
-        PersonWithSalary person1 = new Employee();
-        person1.PaySalary();   // Calls PaySalary method for Employee
-        person1.SendEmail();   // Calls SendEmail method for Employee
+        IPrinter basicPrinter = new BasicPrinter();
+        basicPrinter.Print("Hi, My Name is Abu-Hahdoud");
+        // basicPrinter.Scan();
 
-        PersonWithSalary person2 = new Manager();
-        person2.PaySalary();   // Calls PaySalary method for Manager
-        person2.SendEmail();   // Calls SendEmail method for Manager
+        //basicPrinter.Fax();
 
-        Person person3 = new Student();
-        person3.SendEmail();   // Calls SendEmail method for Student
-
-        Person person4 = new User();
-        person4.SendEmail();   // Calls SendEmail method for Student
+        AdvancedPrinter advancedPrinter = new AdvancedPrinter();
+        advancedPrinter.Print("Hi, My Name is Abu-Hahdoud");
+        advancedPrinter.Scan();
+        advancedPrinter.Fax();
 
         Console.ReadKey();
+
     }
 }
