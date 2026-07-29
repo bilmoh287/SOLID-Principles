@@ -1,45 +1,49 @@
 ﻿using System;
 
-public interface IPayment
+public interface ICreditCardPayment
 {
     void PayWithCreditCard();
+}
+
+public interface IPaypalPaymnet
+{
     void PayWithPayPal();
+}
+
+public interface IBitcoinPayment
+{
     void PayWithBitcoin();
 }
 
-public class CreditCardPayment : IPayment
+public class CreditCardPayment : ICreditCardPayment
 {
     public void PayWithCreditCard()
     {
         Console.WriteLine("Payment with credit card.");
     }
-
-    public void PayWithPayPal()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void PayWithBitcoin()
-    {
-        throw new NotImplementedException();
-    }
 }
 
-public class PayPalPayment : IPayment
+public class PayPalPayment : IPaypalPaymnet
 {
-    public void PayWithCreditCard()
-    {
-        throw new NotImplementedException();
-    }
-
     public void PayWithPayPal()
     {
         Console.WriteLine("Payment with PayPal.");
     }
+}
 
+public class AllInOnePayment : ICreditCardPayment, IPaypalPaymnet, IBitcoinPayment
+{
+    public void PayWithCreditCard()
+    {
+        Console.WriteLine("Payment with credit card.");
+    }
+    public void PayWithPayPal()
+    {
+        Console.WriteLine("Payment with PayPal.");
+    }
     public void PayWithBitcoin()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Payment with Bitcoin.");
     }
 }
 
@@ -47,15 +51,16 @@ public class Program
 {
     public static void Main()
     {
-        IPayment creditCardPayment = new CreditCardPayment();
+        CreditCardPayment creditCardPayment = new CreditCardPayment();
         creditCardPayment.PayWithCreditCard();
-        // creditCardPayment.PayWithPayPal();
-        // creditCardPayment.PayWithBitcoin ();
 
-        IPayment payPalPayment = new PayPalPayment();
+        PayPalPayment payPalPayment = new PayPalPayment();
         payPalPayment.PayWithPayPal();
-        //payPalPayment.PayWithCreditCard();
-        // payPalPayment.PayWithBitcoin();
+
+        AllInOnePayment allInOnePayment = new AllInOnePayment();
+        allInOnePayment.PayWithCreditCard();
+        allInOnePayment.PayWithPayPal();
+        allInOnePayment.PayWithBitcoin();
 
         Console.ReadKey();
 
