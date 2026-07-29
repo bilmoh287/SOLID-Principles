@@ -1,67 +1,55 @@
 ﻿using System;
 
-namespace LSPViolation
+public class Bird
 {
-    class Bird
+    public virtual void Eat()
     {
-        public virtual void Eat()
-        {
-            Console.WriteLine("Bird is eating.");
-        }
+        Console.WriteLine("Bird is eating.");
+    }
+}
 
-        public virtual void Fly()
-        {
-            Console.WriteLine("Bird is flying.");
-        }
+public class FlyingBird : Bird
+{
+    public virtual void Fly()
+    {
+        Console.WriteLine("Bird is flying.");
+    }
+}
+
+class Eagle : FlyingBird
+{
+    public override void Eat()
+    {
+        Console.WriteLine("Eagle is eating meat.");
     }
 
-    class Eagle : Bird
+    public override void Fly()
     {
-        public override void Eat()
-        {
-            Console.WriteLine("Eagle is eating meat.");
-        }
+        Console.WriteLine("Eagle is flying high in the sky.");
+    }
+}
 
-        public override void Fly()
-        {
-            Console.WriteLine("Eagle is flying high in the sky.");
-        }
+class Ostrich : Bird
+{
+    public override void Eat()
+    {
+        Console.WriteLine("Ostrich is eating plants.");
     }
 
-    class Ostrich : Bird
+}
+
+internal class Program
+{
+
+    static void Main(string[] args)
     {
-        public override void Eat()
-        {
-            Console.WriteLine("Ostrich is eating plants.");
-        }
+        Eagle eagle = new Eagle();
+        Ostrich ostrich = new Ostrich();
 
-        public override void Fly()
-        {
-            throw new NotSupportedException("Ostriches cannot fly.");
-        }
-    }
+        eagle.Eat();
+        eagle.Fly();
+        ostrich.Eat();
 
-    internal class Program
-    {
-        static void MakeBirdFly(Bird bird)
-        {
-            bird.Fly();
-        }
-
-        static void Main(string[] args)
-        {
-            Bird eagle = new Eagle();
-            Bird ostrich = new Ostrich();
-
-            eagle.Eat();
-            eagle.Fly();
-            MakeBirdFly(eagle);
-
-            Console.WriteLine();
-            ostrich.Eat();
-            MakeBirdFly(ostrich);   // ❌ Runtime Exception
-
-            Console.ReadKey();
-        }
+        Console.ReadKey();
     }
 }
