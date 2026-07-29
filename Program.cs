@@ -2,36 +2,28 @@
 using System;
 using System.Drawing;
 
-public interface IPrinter
+public interface IPrint
 {
     void Print(string content);
-    void Scan();
-    void Fax();
-
 }
-
-public class BasicPrinter : IPrinter
+public interface IScan
+{
+    void Scan();
+}
+public interface IFax
+{
+    void Fax();
+}
+public class BasicPrinter : IPrint
 {
     public void Print(string content)
     {
         Console.WriteLine($"Printing: {content}");
     }
-
-    public void Scan()
-    {
-        // BasicPrinter doesn't support scanning, but must implement this method
-        throw new NotImplementedException();
-    }
-
-    public void Fax()
-    {
-        // BasicPrinter doesn't support faxing, but must implement this method
-        throw new NotImplementedException();
-    }
 }
 
 
-public class AdvancedPrinter : IPrinter
+public class AdvancedPrinter : IPrint, IScan, IFax
 {
     public void Print(string content)
     {
@@ -53,11 +45,9 @@ public class Program
 {
     public static void Main()
     {
-        IPrinter basicPrinter = new BasicPrinter();
+        BasicPrinter basicPrinter = new BasicPrinter();
         basicPrinter.Print("Hi, My Name is Abu-Hahdoud");
-        // basicPrinter.Scan();
 
-        //basicPrinter.Fax();
 
         AdvancedPrinter advancedPrinter = new AdvancedPrinter();
         advancedPrinter.Print("Hi, My Name is Abu-Hahdoud");

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SOLID._03_LSP
+namespace SOLID._03_LSP;
 using System;
 
 public class Person
@@ -74,7 +74,7 @@ public class User : Person
 
 public class Program4
 {
-    public static void main(string[] args)
+    public static void ain(string[] args)
     {
         PersonWithSalary person1 = new Employee();
         person1.PaySalary();   // Calls PaySalary method for Employee
@@ -94,4 +94,4 @@ public class Program4
     }
 }
 
-}
+
