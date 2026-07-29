@@ -1,55 +1,49 @@
 ﻿using System;
 
-public class Bird
+public class Vehicle
 {
-    public virtual void Eat()
+    public virtual void Drive()
     {
-        Console.WriteLine("Bird is eating.");
+        Console.WriteLine("Driving...");
+    }
+}
+public class EngineVehicle : Vehicle
+{
+    public virtual void StartEngine()
+    {
+        Console.WriteLine("Starting engine...");
+    }
+}
+public class Car : EngineVehicle
+{
+    public override void StartEngine()
+    {
+        Console.WriteLine("Car engine started...");
+    }
+
+    public override void Drive()
+    {
+        Console.WriteLine("Car is driving...");
     }
 }
 
-public class FlyingBird : Bird
+public class Bicycle : Vehicle
 {
-    public virtual void Fly()
+    public override void Drive()
     {
-        Console.WriteLine("Bird is flying.");
+        Console.WriteLine("Bicycle is riding...");
     }
 }
 
-class Eagle : FlyingBird
+public class Program
 {
-    public override void Eat()
+    public static void Main(string[] args)
     {
-        Console.WriteLine("Eagle is eating meat.");
-    }
+        EngineVehicle vehicle1 = new Car();
+        vehicle1.StartEngine();
+        vehicle1.Drive();
 
-    public override void Fly()
-    {
-        Console.WriteLine("Eagle is flying high in the sky.");
-    }
-}
-
-class Ostrich : Bird
-{
-    public override void Eat()
-    {
-        Console.WriteLine("Ostrich is eating plants.");
-    }
-
-}
-
-internal class Program
-{
-
-    static void Main(string[] args)
-    {
-        Eagle eagle = new Eagle();
-        Ostrich ostrich = new Ostrich();
-
-        eagle.Eat();
-        eagle.Fly();
-        ostrich.Eat();
-
-        Console.ReadKey();
+        Vehicle vehicle2 = new Bicycle();
+        vehicle2.Drive();        // Behaves as expected for a bicycle.
     }
 }
