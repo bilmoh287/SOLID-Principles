@@ -1,49 +1,57 @@
 ﻿using System;
 
-public interface ICreditCardPayment
+public interface IDevice
 {
-    void PayWithCreditCard();
+    void MakeCall();
+    void TakePhoto();
+    void SendEmail();
+    void UseGPS();
+
 }
 
-public interface IPaypalPaymnet
+public class Smartphone : IDevice
 {
-    void PayWithPayPal();
-}
-
-public interface IBitcoinPayment
-{
-    void PayWithBitcoin();
-}
-
-public class CreditCardPayment : ICreditCardPayment
-{
-    public void PayWithCreditCard()
+    public void MakeCall()
     {
-        Console.WriteLine("Payment with credit card.");
+        Console.WriteLine("Making a call.");
+    }
+
+    public void TakePhoto()
+    {
+        Console.WriteLine("Taking Photo.");
+    }
+
+    public void SendEmail()
+    {
+        Console.WriteLine("Sending an email.");
+    }
+
+    public void UseGPS()
+    {
+        Console.WriteLine("Using GPS.");
     }
 }
 
-public class PayPalPayment : IPaypalPaymnet
+public class Computer : IDevice
 {
-    public void PayWithPayPal()
+    public void MakeCall()
     {
-        Console.WriteLine("Payment with PayPal.");
+        throw new NotImplementedException();
     }
-}
 
-public class AllInOnePayment : ICreditCardPayment, IPaypalPaymnet, IBitcoinPayment
-{
-    public void PayWithCreditCard()
+    public void TakePhoto()
     {
-        Console.WriteLine("Payment with credit card.");
+        throw new NotImplementedException();
     }
-    public void PayWithPayPal()
+
+    public void SendEmail()
     {
-        Console.WriteLine("Payment with PayPal.");
+        Console.WriteLine("Sending an email.");
     }
-    public void PayWithBitcoin()
+
+    public void UseGPS()
     {
-        Console.WriteLine("Payment with Bitcoin.");
+        throw new NotImplementedException();
     }
 }
 
@@ -51,18 +59,23 @@ public class Program
 {
     public static void Main()
     {
-        CreditCardPayment creditCardPayment = new CreditCardPayment();
-        creditCardPayment.PayWithCreditCard();
+        IDevice smartphone = new Smartphone();
+        Console.WriteLine("SmartPhone:");
+        smartphone.MakeCall();
+        smartphone.TakePhoto();
+        smartphone.SendEmail();
+        smartphone.UseGPS();
 
-        PayPalPayment payPalPayment = new PayPalPayment();
-        payPalPayment.PayWithPayPal();
+        IDevice computer = new Computer();
+        Console.WriteLine("\nComputer:");
+        computer.SendEmail();
+        //computer.TakePhoto();// This will throw an exception.
+        //computer.SendEmail();// This will throw an exception.
+        //computer.UseGPS();// This will throw an exception.
 
-        AllInOnePayment allInOnePayment = new AllInOnePayment();
-        allInOnePayment.PayWithCreditCard();
-        allInOnePayment.PayWithPayPal();
-        allInOnePayment.PayWithBitcoin();
 
         Console.ReadKey();
+
 
     }
 }
