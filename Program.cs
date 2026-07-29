@@ -1,43 +1,45 @@
-﻿// Violation of ISP: An interface that forces clients to implement methods they don't need
-using System;
-using System.Drawing;
+﻿using System;
 
-public interface IPrint
+public interface IPayment
 {
-    void Print(string content);
+    void PayWithCreditCard();
+    void PayWithPayPal();
+    void PayWithBitcoin();
 }
-public interface IScan
+
+public class CreditCardPayment : IPayment
 {
-    void Scan();
-}
-public interface IFax
-{
-    void Fax();
-}
-public class BasicPrinter : IPrint
-{
-    public void Print(string content)
+    public void PayWithCreditCard()
     {
-        Console.WriteLine($"Printing: {content}");
+        Console.WriteLine("Payment with credit card.");
+    }
+
+    public void PayWithPayPal()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void PayWithBitcoin()
+    {
+        throw new NotImplementedException();
     }
 }
 
-
-public class AdvancedPrinter : IPrint, IScan, IFax
+public class PayPalPayment : IPayment
 {
-    public void Print(string content)
+    public void PayWithCreditCard()
     {
-        Console.WriteLine($"Printing: {content}");
+        throw new NotImplementedException();
     }
 
-    public void Scan()
+    public void PayWithPayPal()
     {
-        Console.WriteLine($"Scanning..");
+        Console.WriteLine("Payment with PayPal.");
     }
 
-    public void Fax()
+    public void PayWithBitcoin()
     {
-        Console.WriteLine($"Faxing...");
+        throw new NotImplementedException();
     }
 }
 
@@ -45,14 +47,15 @@ public class Program
 {
     public static void Main()
     {
-        BasicPrinter basicPrinter = new BasicPrinter();
-        basicPrinter.Print("Hi, My Name is Abu-Hahdoud");
+        IPayment creditCardPayment = new CreditCardPayment();
+        creditCardPayment.PayWithCreditCard();
+        // creditCardPayment.PayWithPayPal();
+        // creditCardPayment.PayWithBitcoin ();
 
-
-        AdvancedPrinter advancedPrinter = new AdvancedPrinter();
-        advancedPrinter.Print("Hi, My Name is Abu-Hahdoud");
-        advancedPrinter.Scan();
-        advancedPrinter.Fax();
+        IPayment payPalPayment = new PayPalPayment();
+        payPalPayment.PayWithPayPal();
+        //payPalPayment.PayWithCreditCard();
+        // payPalPayment.PayWithBitcoin();
 
         Console.ReadKey();
 
