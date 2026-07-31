@@ -1,15 +1,44 @@
-﻿using System;
+﻿using static SOLID._04_Interface_Segregating_Principle_ISP_._05_ViolatingISP_Device;
 
-public interface IDevice
+public interface IMakeCall
 {
     void MakeCall();
+}
+public interface ITakePhoto
+{
     void TakePhoto();
+}
+public interface IRecordVideo
+{
+    void RecordVideo();
+}
+public interface ISendEmail
+{
     void SendEmail();
+}
+public interface IUseGPS
+{
     void UseGPS();
-
+}
+public interface ICamera : ITakePhoto, IRecordVideo
+{
+    // This interface is for devices that can take photos and record videos.
 }
 
-public class Smartphone : IDevice
+
+// === Device Interfaces === //
+public interface IPhone : IMakeCall, ICamera, ISendEmail, IUseGPS
+{
+    // This interface combines all the functionalities of a phone.
+}
+public interface IComputer : ISendEmail, ICamera
+{
+    // This interface is for Computers devices.
+}
+
+
+// === Device Implementations === //
+public class SmartPhone : IPhone
 {
     public void MakeCall()
     {
@@ -19,6 +48,11 @@ public class Smartphone : IDevice
     public void TakePhoto()
     {
         Console.WriteLine("Taking Photo.");
+    }
+
+    public void RecordVideo()
+    {
+        Console.WriteLine("Recording a video.");
     }
 
     public void SendEmail()
@@ -32,41 +66,35 @@ public class Smartphone : IDevice
     }
 }
 
-public class Computer : IDevice
+public class Computer : IComputer
 {
-    public void MakeCall()
+    public void SendEmail()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Sending an email By Computer.");
     }
 
     public void TakePhoto()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Taking Photo By Computer.");
     }
-
-    public void SendEmail()
+    public void RecordVideo()
     {
-        Console.WriteLine("Sending an email.");
-    }
-
-    public void UseGPS()
-    {
-        throw new NotImplementedException();
+        Console.WriteLine("Recording a video By Computer.");
     }
 }
 
 public class Program
 {
-    public static void Main()
+    public static void main()
     {
-        IDevice smartphone = new Smartphone();
+        SmartPhone smartphone = new SmartPhone();
         Console.WriteLine("SmartPhone:");
         smartphone.MakeCall();
         smartphone.TakePhoto();
         smartphone.SendEmail();
         smartphone.UseGPS();
 
-        IDevice computer = new Computer();
+        Computer computer = new Computer();
         Console.WriteLine("\nComputer:");
         computer.SendEmail();
         //computer.TakePhoto();// This will throw an exception.
