@@ -1,109 +1,43 @@
-﻿using static SOLID._04_Interface_Segregating_Principle_ISP_._05_ViolatingISP_Device;
-
-public interface IMakeCall
-{
-    void MakeCall();
-}
-public interface ITakePhoto
-{
-    void TakePhoto();
-}
-public interface IRecordVideo
-{
-    void RecordVideo();
-}
-public interface ISendEmail
-{
-    void SendEmail();
-}
-public interface IUseGPS
-{
-    void UseGPS();
-}
-public interface ICamera : ITakePhoto, IRecordVideo
-{
-    // This interface is for devices that can take photos and record videos.
-}
+﻿using System;
 
 
-// === Device Interfaces === //
-public interface IPhone : IMakeCall, ICamera, ISendEmail, IUseGPS
+public class PdfReportGenerator
 {
-    // This interface combines all the functionalities of a phone.
-}
-public interface IComputer : ISendEmail, ICamera
-{
-    // This interface is for Computers devices.
-}
-
-
-// === Device Implementations === //
-public class SmartPhone : IPhone
-{
-    public void MakeCall()
+    public void Generate()
     {
-        Console.WriteLine("Making a call.");
-    }
-
-    public void TakePhoto()
-    {
-        Console.WriteLine("Taking Photo.");
-    }
-
-    public void RecordVideo()
-    {
-        Console.WriteLine("Recording a video.");
-    }
-
-    public void SendEmail()
-    {
-        Console.WriteLine("Sending an email.");
-    }
-
-    public void UseGPS()
-    {
-        Console.WriteLine("Using GPS.");
+        Console.WriteLine("PDF report generated :-).");
     }
 }
 
-public class Computer : IComputer
+public class ReportGenerator
 {
-    public void SendEmail()
+    private PdfReportGenerator _pdfReportGenerator;
+
+
+    public ReportGenerator()
     {
-        Console.WriteLine("Sending an email By Computer.");
+        // Direct dependency on PdfReport (low-level module)
+        _pdfReportGenerator = new PdfReportGenerator();
+
     }
 
-    public void TakePhoto()
+    public void GenerateReport()
     {
-        Console.WriteLine("Taking Photo By Computer.");
+        _pdfReportGenerator.Generate();
     }
-    public void RecordVideo()
+
+
+    class Program
     {
-        Console.WriteLine("Recording a video By Computer.");
-    }
-}
-
-public class Program
-{
-    public static void main()
-    {
-        SmartPhone smartphone = new SmartPhone();
-        Console.WriteLine("SmartPhone:");
-        smartphone.MakeCall();
-        smartphone.TakePhoto();
-        smartphone.SendEmail();
-        smartphone.UseGPS();
-
-        Computer computer = new Computer();
-        Console.WriteLine("\nComputer:");
-        computer.SendEmail();
-        //computer.TakePhoto();// This will throw an exception.
-        //computer.SendEmail();// This will throw an exception.
-        //computer.UseGPS();// This will throw an exception.
+        static void Main(string[] args)
+        {
+            // Client code
+            ReportGenerator reportGenerator = new ReportGenerator();
+            reportGenerator.GenerateReport();
 
 
-        Console.ReadKey();
+            Console.ReadKey();
 
-
+        }
     }
 }
