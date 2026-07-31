@@ -37,7 +37,7 @@ namespace SOLID._05_Dependency_Inversion_Principle_DIP_
 
         class Program
         {
-            static void Main(string[] args)
+            static void main(string[] args)
             {
                 // Client code
                 ReportGenerator reportGenerator = new ReportGenerator();
